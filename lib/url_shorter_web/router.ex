@@ -18,6 +18,15 @@ defmodule UrlShorterWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/short_links", ShortLinkLive.Index, :index
+    live "/short_links/new", ShortLinkLive.Index, :new
+    live "/short_links/:id/edit", ShortLinkLive.Index, :edit
+
+    live "/short_links/:id", ShortLinkLive.Show, :show
+    live "/short_links/:id/show/edit", ShortLinkLive.Show, :edit
+
+    get "/:key", ShortLinkRedirectController, :index
   end
 
   # Other scopes may use custom stacks.

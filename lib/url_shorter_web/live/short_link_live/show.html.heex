@@ -1,0 +1,28 @@
+<.header>
+  Short link <%= @short_link.id %>
+  <:subtitle>This is a short_link record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/short_links/#{@short_link}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit short_link</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Key"><%= @short_link.key %></:item>
+  <:item title="Url"><%= @short_link.url %></:item>
+  <:item title="Hit count"><%= @short_link.hit_count %></:item>
+</.list>
+
+<.back navigate={~p"/short_links"}>Back to short_links</.back>
+
+<.modal :if={@live_action == :edit} id="short_link-modal" show on_cancel={JS.patch(~p"/short_links/#{@short_link}")}>
+  <.live_component
+    module={UrlShorterWeb.ShortLinkLive.FormComponent}
+    id={@short_link.id}
+    title={@page_title}
+    action={@live_action}
+    short_link={@short_link}
+    patch={~p"/short_links/#{@short_link}"}
+  />
+</.modal>
