@@ -6,6 +6,7 @@ defmodule UrlShorter.ShortLinks.ShortLink do
     field :key, :string
     field :url, Fields.Url
     field :hit_count, :integer
+    belongs_to :user, UrlShorter.Accounts.User
 
     timestamps(type: :utc_datetime)
   end
@@ -13,7 +14,7 @@ defmodule UrlShorter.ShortLinks.ShortLink do
   @doc false
   def changeset(short_link, attrs) do
     short_link
-    |> cast(attrs, [:key, :url, :hit_count])
+    |> cast(attrs, [:key, :url, :hit_count, :user_id])
     |> validate_required([:url])
   end
 end

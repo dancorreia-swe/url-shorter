@@ -31,10 +31,16 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="short_link-modal" show on_cancel={JS.patch(~p"/short_links")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="short_link-modal"
+  show
+  on_cancel={JS.patch(~p"/short_links")}
+>
   <.live_component
     module={UrlShorterWeb.ShortLinkLive.FormComponent}
     id={@short_link.id || :new}
+    current_user={@current_user}
     title={@page_title}
     action={@live_action}
     short_link={@short_link}

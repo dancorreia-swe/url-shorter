@@ -6,7 +6,12 @@ defmodule UrlShorterWeb.ShortLinkLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :short_links, ShortLinks.list_short_links())}
+    {:ok,
+     stream(
+       socket,
+       :short_links,
+       ShortLinks.list_short_links_for_user(socket.assigns.current_user.id)
+     )}
   end
 
   @impl true

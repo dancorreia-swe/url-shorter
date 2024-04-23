@@ -21,6 +21,10 @@ defmodule UrlShorter.ShortLinks do
     Repo.all(ShortLink)
   end
 
+  def list_short_links_for_user(user_id) do
+    Repo.all(from s in ShortLink, where: s.user_id == ^user_id)
+  end
+
   @doc """
   Gets a single short_link.
 

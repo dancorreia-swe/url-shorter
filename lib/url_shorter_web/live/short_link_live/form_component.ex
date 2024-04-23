@@ -21,7 +21,6 @@ defmodule UrlShorterWeb.ShortLinkLive.FormComponent do
       >
         <.input field={@form[:key]} type="text" label="Key" />
         <.input field={@form[:url]} type="text" label="Url" />
-        <.input field={@form[:hit_count]} type="number" label="Hit count" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Short link</.button>
         </:actions>
@@ -70,6 +69,8 @@ defmodule UrlShorterWeb.ShortLinkLive.FormComponent do
   end
 
   defp save_short_link(socket, :new, short_link_params) do
+    short_link_params = Map.put(short_link_params, "user_id", socket.assigns.current_user.id)
+
     case ShortLinks.create_short_link(short_link_params) do
       {:ok, short_link} ->
         notify_parent({:saved, short_link})
