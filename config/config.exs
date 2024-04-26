@@ -8,6 +8,7 @@
 import Config
 
 config :url_shorter,
+  env: Mix.env(),
   ecto_repos: [UrlShorter.Repo],
   generators: [timestamp_type: :utc_datetime]
 

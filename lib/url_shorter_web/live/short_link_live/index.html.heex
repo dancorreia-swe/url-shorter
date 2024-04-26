@@ -1,0 +1,49 @@
+<.header>
+  Listing Short links
+  <:actions>
+    <.link patch={~p"/short_links/new"}>
+      <.button>New Short link</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="short_links"
+  rows={@streams.short_links}
+  row_click={fn {_id, short_link} -> JS.navigate(~p"/short_links/#{short_link}") end}
+>
+  <:col :let={{_id, short_link}} label="Key"><%= short_link.key %></:col>
+  <:col :let={{_id, short_link}} label="Url"><%= short_link.url %></:col>
+  <:col :let={{_id, short_link}} label="Hit count"><%= short_link.hit_count %></:col>
+  <:action :let={{_id, short_link}}>
+    <div class="sr-only">
+      <.link navigate={~p"/short_links/#{short_link}"}>Show</.link>
+    </div>
+    <.link patch={~p"/short_links/#{short_link}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, short_link}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: short_link.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="short_link-modal"
+  show
+  on_cancel={JS.patch(~p"/short_links")}
+>
+  <.live_component
+    module={UrlShorterWeb.ShortLinkLive.FormComponent}
+    id={@short_link.id || :new}
+    current_user={@current_user}
+    title={@page_title}
+    action={@live_action}
+    short_link={@short_link}
+    patch={~p"/short_links"}
+  />
+</.modal>
